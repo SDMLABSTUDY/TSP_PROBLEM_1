@@ -1,2 +1,38 @@
 *.pdf
 *.xml
+
+# Python 컴파일된 파일 (Byte-compiled)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 가상환경 (Virtual Environments)
+venv/
+env/
+.env/
+*.venv
+
+# 환경변수 및 비밀키 파일 (Environment variables)
+.env
+.flaskenv
+secrets.json
+
+# IDE/에디터 설정 (VS Code, PyCharm 등)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 파이썬 패키지 관리 및 설치 파일
+*.egg-info/
+dist/
+build/
+downloads/
+eggs/
+*.egg
+
+# 로그 및 데이터 파일
+*.log
+data/
+*.csv
+*.xlsx
