@@ -1,13 +1,18 @@
 import statistics
-import time
+import os
+import random
 from TSP_class import TSP_Base
 
 
 def run_single_2opt():
-    target_file = "testset2/cycle600.in"
+    target_filename = "testset2/cycle318.in"
 
-    engine = TSP_Base(target_file, run_name="run_Single2OPT", seed=42)
-    print(f"🚀 Start Single 2-OPT on {target_file}")
+    base_path = ""
+    full_path = os.path.join(base_path, target_filename)
+
+    # 엔진 초기화
+    engine = TSP_Base(full_path, run_name="run_Single2OPT", seed=42)
+    print(f"🚀 Start Single 2-OPT on {target_filename}")
 
     results = []
     best_overall_tour = None
@@ -30,14 +35,17 @@ def run_single_2opt():
         ["Total Runs", 100],
         ["Mean Fitness", statistics.mean(results)],
         ["Best (Min) Fitness", min(results)],
+        ["Worst (Max) Fitness", max(results)],
+        ["Std Dev", statistics.stdev(results)]
     ]
     engine.save_summary(["Metric", "Value"], summary_data)
 
-    # [시각화] 최고 기록 저장
     engine.plot_solution(best_overall_tour,
                          f"Single 2-OPT Best (Fit: {best_overall_fit:.2f})",
                          "best_single_2opt.png")
+
     print(f"📸 Saved Best Single 2-OPT Plot (Fit: {best_overall_fit:.2f})")
+    print(f"   Mean: {statistics.mean(results):.2f}, Best: {min(results):.2f}")
 
 
 if __name__ == "__main__":

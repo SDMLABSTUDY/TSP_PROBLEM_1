@@ -163,6 +163,32 @@ class TSP_Base:
         plt.savefig(save_path)
         plt.close()
 
+    def plot_convergence_graph(self, trace_data, seed):
+        if not trace_data:
+            return
+
+        gens = [row[0] for row in trace_data]
+        bests = [row[2] for row in trace_data]
+        avgs = [row[3] for row in trace_data]
+
+        plt.figure(figsize=(10, 6))
+
+        # Best Line (Red)
+        plt.plot(gens, bests, 'r-', label='Best Fitness')
+        # Average Line (Blue)
+        plt.plot(gens, avgs, 'b--', label='Avg Fitness', alpha=0.7)
+
+        plt.title(f"Convergence Graph (Seed {seed})")
+        plt.xlabel("Generation")
+        plt.ylabel("Fitness (Distance)")
+        plt.grid(True, linestyle='--', alpha=0.5)
+        plt.legend()
+
+        filename = f"convergence_seed_{seed}.png"
+        save_path = os.path.join(self.result_path, "plots", filename)
+        plt.savefig(save_path)
+        plt.close()
+
     def save_summary(self, header, data):
         path = os.path.join(self.result_path, "summary_results.csv")
         with open(path, "w", newline='') as f:

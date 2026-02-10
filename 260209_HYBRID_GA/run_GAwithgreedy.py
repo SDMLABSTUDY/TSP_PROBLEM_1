@@ -7,9 +7,8 @@ from TSP_class import GA_Engine
 
 def run_ga_greedy():
     # 1. 파일 및 파라미터 설정
-    target_filename = "testset2/cycle600.in"  # 파일명 확인
+    target_filename = "testset2/cycle318.in"
 
-    # 경로 설정
     base_path = ""
     full_path = os.path.join(base_path, target_filename)
 
@@ -20,7 +19,6 @@ def run_ga_greedy():
         'TOURNAMENT_T': 0.8,
     }
 
-    # 20회 반복
     SEEDS = range(20)
 
     # 2. 엔진 초기화
@@ -44,9 +42,8 @@ def run_ga_greedy():
         random.seed(seed)
         engine.rng.seed(seed)
 
-        # 3. 초기 집단 생성
+        # 3. 초기 집단 생성 (Greedy 포함)
         population = [(greedy_tour, greedy_fit)]
-
         while len(population) < params['POP_SIZE']:
             t = list(range(engine.n_cities))
             engine.rng.shuffle(t)
@@ -74,15 +71,14 @@ def run_ga_greedy():
 
             population = engine.replacement(population, offsprings)
 
-            # Trace 기록
+            # Trace 기록 (Gen, Time, Best, Avg)
             current_best = population[0][1]
-            trace.append((time.time() - start_time, current_best))
+            current_avg = sum(p[1] for p in population) / len(population)
+            trace.append((gen, time.time() - start_time, current_best, current_avg))
 
         # 5. 결과 처리
         best_sol = population[0]
         elapsed = time.time() - start_time
-
-        # 개선율 계산
         imp = (greedy_fit - best_sol[1]) / greedy_fit * 100.0
 
         ga_results.append(best_sol[1])
@@ -90,11 +86,13 @@ def run_ga_greedy():
 
         print(f"{seed:>4} | {best_sol[1]:>12.4f} | {imp:>10.2f} | {gen:>11}")
 
-        # [저장] 로그 및 시각화
+        # [저장]
         engine.save_seed_log(seed, trace)
         engine.plot_solution(best_sol[0],
                              f"Seed {seed} GA(GreedyInit) Best ({best_sol[1]:.2f})",
                              f"plot_seed_{seed}.png")
+        # 확인용 기본 그래프
+        engine.plot_convergence_graph(trace, seed)
 
         summary_rows.append([seed, best_sol[1], gen, imp, elapsed])
 
