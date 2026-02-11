@@ -1,3 +1,4 @@
+
 import statistics
 import os
 import random
@@ -5,12 +6,12 @@ from TSP_class import TSP_Base
 
 
 def run_single_2opt():
-    target_filename = "testset2/cycle318.in"
+    target_filename = "testset2/cycle200.in"
 
     base_path = ""
     full_path = os.path.join(base_path, target_filename)
 
-    # 엔진 초기화
+    # gpt : 엔진 초기화
     engine = TSP_Base(full_path, run_name="run_Single2OPT", seed=42)
     print(f"🚀 Start Single 2-OPT on {target_filename}")
 
